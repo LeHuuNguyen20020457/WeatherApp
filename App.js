@@ -2,9 +2,10 @@ import 'react-native-gesture-handler';
 
 import React, { useEffect, useState, useRef, useLayoutEffect, Suspense, lazy, startTransition } from 'react';
 import { View, Text, ImageBackground, StyleSheet, StatusBar, ScrollView, Dimensions } from 'react-native';
+import axios from 'axios';
 import { DataContext, scrollHorizontalContext } from './config/ThemeContext';
 import { db } from './firebase/firebase-config';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs, updateDoc, doc } from 'firebase/firestore';
 
 import { DrawerNavigator } from './navigator/drawer/';
 import ThemeProvider from './config/ThemeProvider';
@@ -15,7 +16,7 @@ export default function App() {
     const [scrollHorizontal, setScrollHorizontal] = useState(true);
     const [index, setIndex] = useState(0);
     const [reloadData, setReloadData] = useState(false);
-    const [isRerender, setIsRerender] = useState(false);
+    const [refreshing, setRefreshing] = useState(false);
 
     const scrollViewRef = useRef();
 
@@ -39,10 +40,63 @@ export default function App() {
         getData();
     }, [reloadData]);
 
+    useEffect(() => {
+        async function updateWeather() {
+            let citys = [];
+            await getDocs(collection(db, 'weatherLocation')).then((snapshot) => {
+                snapshot.docs.forEach((doc) => {
+                    citys.push({
+                        id: doc.id,
+                        name: doc.data().city.name,
+                    });
+                });
+            });
+
+            citys.map((city, index) => {
+                axios
+                    .get(
+                        `https://api.openweathermap.org/data/2.5/forecast?q=${city.name}&appid=1f6ee6321c963bedf422d26c3ac3f1cd&units=metric&cnt=40&lang=vi`,
+                    )
+                    .then(async (weatherCity) => {
+                        await updateDoc(doc(db, 'weatherLocation', city.id), {
+                            list: weatherCity.data.list,
+                            city: weatherCity.data.city,
+                        })
+                            .then(() => {
+                                setReloadData(!reloadData);
+                                setRefreshing(false);
+                                console.log('updated successfully');
+                            })
+                            .catch((error) => {
+                                console.log(error);
+                            });
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    });
+            });
+        }
+        updateWeather();
+
+        const interal = setInterval(() => {
+            updateWeather();
+        }, 24 * 60 * 60 * 1000);
+
+        return () => clearInterval(interal);
+    }, [refreshing]);
+
     return dataWeather ? (
         <ThemeProvider>
             <scrollHorizontalContext.Provider
-                value={[scrollHorizontal, setScrollHorizontal, setIndex, reloadData, setReloadData]}
+                value={{
+                    scrollHorizontal,
+                    setScrollHorizontal,
+                    setIndex,
+                    reloadData,
+                    setReloadData,
+                    refreshing,
+                    setRefreshing,
+                }}
             >
                 <ScrollView
                     horizontal

@@ -1,12 +1,13 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { scrollHorizontalContext } from '../../config/ThemeContext';
 
 const SearchResults = ({ weatherForEachLocation, index }) => {
     const [currentTime, setCurrentTime] = useState('');
     const navigation = useNavigation();
-    const [scrollHorizontal, setScrollHorizontal, setIndex] = useContext(scrollHorizontalContext);
+    // const [scrollHorizontal, setScrollHorizontal, setIndex] = useContext(scrollHorizontalContext);
+    const { setIndex } = useContext(scrollHorizontalContext);
 
     useEffect(() => {
         const handleTime = () => {
@@ -28,8 +29,8 @@ const SearchResults = ({ weatherForEachLocation, index }) => {
     return (
         <TouchableOpacity
             onPress={() => {
-                setIndex(index);
                 navigation.navigate('Thời tiết');
+                setIndex(index);
             }}
         >
             <View style={styles.containerSearchResults}>

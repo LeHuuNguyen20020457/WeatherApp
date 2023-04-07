@@ -12,8 +12,7 @@ const SplashScreen = () => {
                 (currentPosition.x + viewSizeRef.current.width) % (viewSizeRef.current.width * numberImage.current);
             scrollViewRef.current?.scrollTo({ x: nextPositionX, animated: true });
             setCurrentPosition({ x: nextPositionX, y: 0 });
-            console.log('vào');
-        }, 1000);
+        }, 1500);
 
         return () => clearInterval(interval);
     }, [currentPosition]);

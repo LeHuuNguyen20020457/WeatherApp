@@ -1,17 +1,30 @@
-import React, { useRef, useState, useEffect, useMemo, startTransition } from 'react';
-import { View, Text } from 'react-native';
+import React, { useRef, useState, useEffect, useMemo, startTransition, useLayoutEffect, Suspense, lazy } from 'react';
+import { View, ActivityIndicator } from 'react-native';
 import { matchSorter } from 'match-sorter';
 import { db } from '../firebase/firebase-config';
 import { collection, getDocs } from 'firebase/firestore';
 import { ScrollView } from 'react-native-gesture-handler';
 
 import { SearchResults } from '../module/searchResults';
+// const SearchResults = lazy(() => import('../module/searchResults/SearchResults'));
+// const SearchResults = lazy(() => {
+//     return new Promise((resolve) => {
+//         console.log('vào');
+//         setTimeout(() => {
+//             resolve(import('../module/searchResults/SearchResults'));
+//         }, 1000);
+//     });
+// });
+
 import { SearchResultsLine } from '../components/searchResultsLine';
+
 import { Input } from '../module/input';
+
 const EditLocation = () => {
     const [keySearch, setKeySearch] = useState(''); // từ search
     const [searchResults, setSearchResults] = useState(); // danh sách các địa điểm
     const [showResultsSearch, setShowResultsSearch] = useState(true);
+    const [loading, setLoading] = useState(false);
 
     const cityList = useRef();
     const cityListSearch = useRef();
@@ -22,7 +35,7 @@ const EditLocation = () => {
     }, []);
 
     // lấy các địa điểm đã lưu
-    useEffect(() => {
+    useLayoutEffect(() => {
         async function getData() {
             await getDocs(collection(db, 'weatherLocation')).then((snapshot) => {
                 let data = [];
@@ -34,6 +47,7 @@ const EditLocation = () => {
                     });
                 });
                 setSearchResults(data);
+                setLoading(true);
             });
         }
         getData();
@@ -50,6 +64,7 @@ const EditLocation = () => {
             cityListSearch.current = city;
         }
     }, [keySearch]);
+    console.log(loading);
 
     return (
         <View>
@@ -58,15 +73,19 @@ const EditLocation = () => {
             {!keySearch ? (
                 <ScrollView>
                     <View style={{ marginTop: 10 }}>
-                        {searchResults?.map((weatherForEachLocation, index) => {
-                            return (
-                                <SearchResults
-                                    key={index}
-                                    index={index}
-                                    weatherForEachLocation={weatherForEachLocation}
-                                ></SearchResults>
-                            );
-                        })}
+                        {loading ? (
+                            searchResults?.map((weatherForEachLocation, index) => {
+                                return (
+                                    <SearchResults
+                                        key={index}
+                                        index={index}
+                                        weatherForEachLocation={weatherForEachLocation}
+                                    ></SearchResults>
+                                );
+                            })
+                        ) : (
+                            <ActivityIndicator />
+                        )}
                     </View>
                 </ScrollView>
             ) : (
@@ -80,6 +99,8 @@ const EditLocation = () => {
                                     setShowResultsSearch={setShowResultsSearch}
                                     showResultsSearch={showResultsSearch}
                                     setKeySearch={setKeySearch}
+                                    setLoading={setLoading}
+                                    loading={loading}
                                 ></SearchResultsLine>
                             );
                         })}

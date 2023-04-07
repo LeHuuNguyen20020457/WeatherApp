@@ -8,7 +8,9 @@ import { WeatherEveryHour } from '../../components/weatherEveryHour';
 import { scrollHorizontalContext, DataContext } from '../../config/ThemeContext';
 
 const HourlyForecast = () => {
-    const [scrollHorizontal, setScrollHorizontal] = useContext(scrollHorizontalContext);
+    // const [scrollHorizontal, setScrollHorizontal] = useContext(scrollHorizontalContext);
+    const { setScrollHorizontal } = useContext(scrollHorizontalContext);
+
     const weatherForEachLocation = useContext(DataContext);
     const { list } = weatherForEachLocation;
 

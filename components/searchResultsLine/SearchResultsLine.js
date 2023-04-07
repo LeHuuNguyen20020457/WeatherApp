@@ -6,9 +6,11 @@ import { db } from '../../firebase/firebase-config';
 import { collection, addDoc } from 'firebase/firestore';
 import { scrollHorizontalContext } from '../../config/ThemeContext';
 
-const SearchResultsLine = ({ city, setShowResultsSearch, showResultsSearch, setKeySearch }) => {
-    const [scrollHorizontal, setScrollHorizontal, setIndex, reloadData, setReloadData] =
-        useContext(scrollHorizontalContext);
+const SearchResultsLine = ({ city, setShowResultsSearch, showResultsSearch, setKeySearch, setLoading }) => {
+    // const [scrollHorizontal, setScrollHorizontal, setIndex, reloadData, setReloadData] =
+    //     useContext(scrollHorizontalContext);
+
+    const { reloadData, setReloadData } = useContext(scrollHorizontalContext);
 
     const handleSelect = () => {
         axios
@@ -20,6 +22,7 @@ const SearchResultsLine = ({ city, setShowResultsSearch, showResultsSearch, setK
                     list: weatherCity.data.list,
                     city: weatherCity.data.city,
                 });
+                setLoading(false);
                 setShowResultsSearch(!showResultsSearch);
                 setKeySearch('');
                 setReloadData(!reloadData);

@@ -7,7 +7,7 @@ import { ForecastByDay } from '../module/forecastByDay';
 
 function Home() {
     return (
-        <ScrollView decelerationRate={'fast'}>
+        <ScrollView decelerationRate={'fast'} showsVerticalScrollIndicator={false}>
             <WeatherKeyInfo></WeatherKeyInfo>
             <HourlyForecast></HourlyForecast>
             <ForecastByDay></ForecastByDay>

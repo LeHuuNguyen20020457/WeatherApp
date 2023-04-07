@@ -5,12 +5,10 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import WithTheme from '../../config/WithTheme';
 import { navigationRef } from '../../utils/RootNavigation';
 
-// const DashboardHeader = lazy(() => import('../../module/dashboard/DashboardHeader'));
-// const SearchNavigation = lazy(() => import('../searchStack/SearchNavigation'));
-// const Home = lazy(() => import('../../screen/Home'));
 import { DashboardHeader } from '../../module/dashboard';
 import Home from '../../screen/Home';
 import SearchNavigation from '../searchStack/SearchNavigation';
+
 function DrawerNavigator() {
     const Drawer = createDrawerNavigator();
     const ThemeDashboardHeader = WithTheme(DashboardHeader);

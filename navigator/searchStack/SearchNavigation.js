@@ -1,9 +1,6 @@
 import React, { lazy, Suspense } from 'react';
 import { View, StyleSheet, Dimensions } from 'react-native';
 
-// const HeaderEditLocation = lazy(() => import('../../module/headerScreen/HeaderEditLocation'));
-// const EditLocation = lazy(() => import('../../screen/EditLocation'));
-// const StackNavigator = lazy(() => import('../stack/StackNavigator'));
 import { StackNavigator } from '../stack';
 import { HeaderEditLocation } from '../../module/headerScreen';
 import EditLocation from '../../screen/EditLocation';

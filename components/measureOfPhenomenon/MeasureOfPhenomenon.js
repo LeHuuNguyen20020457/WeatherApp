@@ -8,7 +8,7 @@ const MeasureOfPhenomenon = ({ fontSize, icon, longEdge }) => {
             <IconBlock longEdge={longEdge} icon={icon}></IconBlock>
             <View style={{ marginLeft: 12 }}>
                 <Text style={[styles.measure, { fontSize: fontSize }]}>
-                    {icon.data.measure} {icon.data.unit}
+                    {icon.data.measure} {icon.data?.unit}
                 </Text>
                 <Text style={styles.phenomenon}>{icon.data.title}</Text>
             </View>

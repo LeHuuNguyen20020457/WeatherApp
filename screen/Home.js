@@ -6,6 +6,7 @@ import { HourlyForecast } from '../module/hourlyForecast';
 import { ForecastByDay } from '../module/forecastByDay';
 import { scrollHorizontalContext } from '../config/ThemeContext';
 import { OtherParameters } from '../module/otherParameters';
+import { WindAndPressure } from '../module/windAndPressure';
 
 function Home() {
     const { refreshing, setRefreshing } = useContext(scrollHorizontalContext);
@@ -25,6 +26,7 @@ function Home() {
                 <HourlyForecast></HourlyForecast>
                 <ForecastByDay></ForecastByDay>
                 <OtherParameters></OtherParameters>
+                <WindAndPressure></WindAndPressure>
             </View>
         </ScrollView>
     );

@@ -17,6 +17,7 @@ export default function App() {
     const [index, setIndex] = useState(0);
     const [reloadData, setReloadData] = useState(false);
     const [refreshing, setRefreshing] = useState(false);
+    const numberUpdate = useRef(0);
 
     const scrollViewRef = useRef();
 
@@ -64,8 +65,6 @@ export default function App() {
                         })
                             .then(() => {
                                 setReloadData(!reloadData);
-                                setRefreshing(false);
-                                console.log('updated successfully');
                             })
                             .catch((error) => {
                                 console.log(error);
@@ -75,14 +74,18 @@ export default function App() {
                         console.log(err);
                     });
             });
+            setRefreshing(false);
         }
-        updateWeather();
+        if (refreshing === true || (numberUpdate.current === 0 && refreshing === false)) {
+            updateWeather();
+            numberUpdate.current = numberUpdate.current + 1;
+        }
 
-        const interal = setInterval(() => {
+        const interval = setInterval(() => {
             updateWeather();
         }, 24 * 60 * 60 * 1000);
 
-        return () => clearInterval(interal);
+        return () => clearInterval(interval);
     }, [refreshing]);
 
     return dataWeather ? (

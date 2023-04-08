@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { ScrollView, RefreshControl } from 'react-native';
+import { ScrollView, RefreshControl, View } from 'react-native';
 
 import { WeatherKeyInfo } from '../module/weatherKeyInfo';
 import { HourlyForecast } from '../module/hourlyForecast';
 import { ForecastByDay } from '../module/forecastByDay';
 import { scrollHorizontalContext } from '../config/ThemeContext';
+import { OtherParameters } from '../module/otherParameters';
 
 function Home() {
     const { refreshing, setRefreshing } = useContext(scrollHorizontalContext);
@@ -19,9 +20,12 @@ function Home() {
             showsVerticalScrollIndicator={false}
             refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh}></RefreshControl>}
         >
-            <WeatherKeyInfo></WeatherKeyInfo>
-            <HourlyForecast></HourlyForecast>
-            <ForecastByDay></ForecastByDay>
+            <View style={{ marginBottom: 100 }}>
+                <WeatherKeyInfo></WeatherKeyInfo>
+                <HourlyForecast></HourlyForecast>
+                <ForecastByDay></ForecastByDay>
+                <OtherParameters></OtherParameters>
+            </View>
         </ScrollView>
     );
 }

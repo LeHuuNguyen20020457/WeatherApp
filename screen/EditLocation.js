@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect, useMemo, startTransition, useLayoutEffect, Suspense, lazy } from 'react';
-import { View, ActivityIndicator } from 'react-native';
+import { View, ActivityIndicator, Animated } from 'react-native';
 import { matchSorter } from 'match-sorter';
 import { db } from '../firebase/firebase-config';
 import { collection, getDocs } from 'firebase/firestore';
@@ -20,7 +20,7 @@ import { SearchResultsLine } from '../components/searchResultsLine';
 
 import { Input } from '../module/input';
 
-const EditLocation = () => {
+const EditLocation = ({ route }) => {
     const [keySearch, setKeySearch] = useState(''); // từ search
     const [searchResults, setSearchResults] = useState(); // danh sách các địa điểm
     const [showResultsSearch, setShowResultsSearch] = useState(true);
@@ -28,6 +28,8 @@ const EditLocation = () => {
 
     const cityList = useRef();
     const cityListSearch = useRef();
+
+    const { isChangeWidth } = route.params;
 
     useEffect(() => {
         const data = require('../public/city.list.json');
@@ -64,7 +66,6 @@ const EditLocation = () => {
             cityListSearch.current = city;
         }
     }, [keySearch]);
-    console.log(loading);
 
     return (
         <View>
@@ -80,6 +81,7 @@ const EditLocation = () => {
                                         key={index}
                                         index={index}
                                         weatherForEachLocation={weatherForEachLocation}
+                                        isChangeWidth={isChangeWidth}
                                     ></SearchResults>
                                 );
                             })

@@ -35,6 +35,7 @@ function StackNavigator(props) {
                         }}
                         name={screen.name}
                         component={screen.component}
+                        initialParams={{ isChangeWidth: false }}
                     ></Stack.Screen>
                 );
             })}

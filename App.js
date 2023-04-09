@@ -42,6 +42,7 @@ export default function App() {
     }, [reloadData]);
 
     useEffect(() => {
+        //update lại dữ liệu khi refreshing hoặc mới vào app
         async function updateWeather() {
             let citys = [];
             await getDocs(collection(db, 'weatherLocation')).then((snapshot) => {

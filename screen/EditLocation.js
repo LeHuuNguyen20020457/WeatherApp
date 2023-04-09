@@ -82,6 +82,8 @@ const EditLocation = ({ route }) => {
                                         index={index}
                                         weatherForEachLocation={weatherForEachLocation}
                                         isChangeWidth={isChangeWidth}
+                                        showResultsSearch={showResultsSearch}
+                                        setShowResultsSearch={setShowResultsSearch}
                                     ></SearchResults>
                                 );
                             })

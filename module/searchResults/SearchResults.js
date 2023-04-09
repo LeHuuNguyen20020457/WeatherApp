@@ -3,15 +3,17 @@ import { View, Text, StyleSheet, Image, TouchableOpacity, ActivityIndicator, Ani
 import { useNavigation } from '@react-navigation/native';
 import { Entypo, AntDesign } from '@expo/vector-icons';
 
+import { db } from '../../firebase/firebase-config';
+import { deleteDoc, doc } from 'firebase/firestore';
 import { scrollHorizontalContext } from '../../config/ThemeContext';
 
-const SearchResults = ({ weatherForEachLocation, index, isChangeWidth }) => {
+const SearchResults = ({ weatherForEachLocation, index, isChangeWidth, showResultsSearch, setShowResultsSearch }) => {
     const [width, setWidth] = useState(390);
 
     const [currentTime, setCurrentTime] = useState('');
 
     const navigation = useNavigation();
-    const { setIndex } = useContext(scrollHorizontalContext);
+    const { setIndex, reloadData, setReloadData } = useContext(scrollHorizontalContext);
 
     const scaleXRef = useRef(new Animated.Value(1)).current;
     const opacityRef = useRef(new Animated.Value(0)).current;
@@ -67,11 +69,20 @@ const SearchResults = ({ weatherForEachLocation, index, isChangeWidth }) => {
         return () => clearInterval(timerInterval);
     }, []);
 
+    async function handleClose() {
+        const docRefDelete = doc(db, 'weatherLocation', weatherForEachLocation.id);
+        await deleteDoc(docRefDelete);
+        setShowResultsSearch(!showResultsSearch);
+        setReloadData(!reloadData);
+    }
+
     return (
         <View style={styles.widthChange}>
-            <Animated.View style={[styles.iconD, { opacity: opacityRef }]}>
-                <Entypo name="home" size={24} color="black" />
-            </Animated.View>
+            <TouchableOpacity style={styles.iconD}>
+                <Animated.View style={{ opacity: opacityRef }}>
+                    <Entypo name="home" size={24} color="black" />
+                </Animated.View>
+            </TouchableOpacity>
 
             <TouchableOpacity
                 onPress={() => {
@@ -109,9 +120,11 @@ const SearchResults = ({ weatherForEachLocation, index, isChangeWidth }) => {
                 </Animated.View>
             </TouchableOpacity>
 
-            <Animated.View style={[styles.iconD, { opacity: opacityRef }]}>
-                <AntDesign name="closecircleo" size={24} color="white" />
-            </Animated.View>
+            <TouchableOpacity style={styles.iconD} onPress={handleClose}>
+                <Animated.View style={{ opacity: opacityRef }}>
+                    <AntDesign name="closecircleo" size={24} color="white" />
+                </Animated.View>
+            </TouchableOpacity>
         </View>
     );
 };

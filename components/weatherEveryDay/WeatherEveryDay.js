@@ -1,24 +1,48 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { Ionicons, AntDesign } from '@expo/vector-icons';
+import React, { useRef, useMemo } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { AntDesign } from '@expo/vector-icons';
 
-const WeatherEveryDay = () => {
+const WeatherEveryDay = ({ item }) => {
+    const day = useRef('');
+    const date = useRef('');
+    useMemo(() => {
+        const time = new Date(item.dt_txt);
+        if (time.getDay() === 0) {
+            day.current = 'CN';
+        } else {
+            const thu = time.getDay() + 1;
+            day.current = 'T.' + thu;
+        }
+        let month = time.getMonth() + 1;
+        date.current = time.getDate() + '/' + month;
+    }, [item]);
     return (
-        <View style={styles.containerEveryDay}>
-            <View style={styles.times}>
-                <Text style={styles.timeText}>T2</Text>
-                <Text style={styles.timeText}>20/3</Text>
+        <TouchableOpacity>
+            <View style={styles.containerEveryDay}>
+                <View style={styles.times}>
+                    <Text style={styles.timeText}>{day.current}</Text>
+                    <Text style={styles.timeText}>{date.current}</Text>
+                </View>
+                <View style={styles.phenomena}>
+                    <Image
+                        style={styles.phenomenaIcon}
+                        source={{
+                            uri: `https://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png`,
+                        }}
+                    ></Image>
+                    <Text style={styles.phenomenaText}>{item.weather[0].description}</Text>
+                </View>
+                <View style={styles.temperature}>
+                    <Text style={[styles.temperatureText, { color: '#3399ff' }]}>
+                        {item.main.temp_min.toFixed(0)}&ordm;
+                    </Text>
+                    <Text style={[styles.temperatureText, { color: 'orange' }]}>
+                        {item.main.temp_max.toFixed(0)}&ordm;
+                    </Text>
+                    <AntDesign name="right" size={14} color="white" />
+                </View>
             </View>
-            <View style={styles.phenomena}>
-                <Ionicons name="md-partly-sunny" size={44} color="yellow" />
-                <Text style={styles.phenomenaText}>Mưa dông</Text>
-            </View>
-            <View style={styles.temperature}>
-                <Text style={[styles.temperatureText, { color: '#3399ff' }]}>22&ordm;</Text>
-                <Text style={[styles.temperatureText, { color: 'orange' }]}>28&ordm;</Text>
-                <AntDesign name="right" size={14} color="white" />
-            </View>
-        </View>
+        </TouchableOpacity>
     );
 };
 
@@ -45,11 +69,16 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-    phenomenaIcon: {},
+    phenomenaIcon: {
+        width: 50,
+        height: 50,
+        flex: 1,
+    },
     phenomenaText: {
         fontSize: 20,
         color: 'white',
         marginLeft: 15,
+        flex: 3,
     },
     temperature: {
         flex: 2,

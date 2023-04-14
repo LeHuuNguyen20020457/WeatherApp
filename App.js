@@ -14,11 +14,11 @@ import SplashScreen from './screen/SplashScreen';
 export default function App() {
     const [dataWeather, setDataWeather] = useState('');
     const [scrollHorizontal, setScrollHorizontal] = useState(true);
-    const [index, setIndex] = useState(0);
     const [reloadData, setReloadData] = useState(false);
     const [refreshing, setRefreshing] = useState(false);
     const numberUpdate = useRef(0);
 
+    const [index, setIndex] = useState(0);
     const scrollViewRef = useRef();
 
     useEffect(() => {

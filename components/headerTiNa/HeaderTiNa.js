@@ -5,12 +5,17 @@ import { TitleContext } from '../../config/ThemeContext';
 // import { navigate } from '../../utils/RootNavigation';
 import { useNavigation } from '@react-navigation/native';
 
-const HeaderTiNa = () => {
+const HeaderTiNa = (props) => {
     const title = useContext(TitleContext);
-    const { navigate, goBack } = useNavigation();
+    const navigation = useNavigation();
     return (
         <View style={styles.headerTiNa}>
-            <TouchableOpacity onPress={() => goBack()}>
+            <TouchableOpacity
+                onPress={() => {
+                    navigation.goBack();
+                    navigation.openDrawer();
+                }}
+            >
                 <AntDesign name="left" size={24} color="white" />
             </TouchableOpacity>
             <Text style={styles.headerTiNaText}>{title ? title : ''}</Text>

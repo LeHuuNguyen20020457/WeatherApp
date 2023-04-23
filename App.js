@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 
-import React, { useEffect, useState, useRef, useLayoutEffect, Suspense, lazy, startTransition } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { View, Text, ImageBackground, StyleSheet, StatusBar, ScrollView, Dimensions } from 'react-native';
 import axios from 'axios';
 import { DataContext, scrollHorizontalContext } from './config/ThemeContext';
@@ -16,6 +16,7 @@ export default function App() {
     const [scrollHorizontal, setScrollHorizontal] = useState(true);
     const [reloadData, setReloadData] = useState(false);
     const [refreshing, setRefreshing] = useState(false);
+    const [scrollToDay, setScrollToDay] = useState(0);
     const numberUpdate = useRef(0);
 
     const [index, setIndex] = useState(0);
@@ -100,6 +101,8 @@ export default function App() {
                     setReloadData,
                     refreshing,
                     setRefreshing,
+                    scrollToDay,
+                    setScrollToDay,
                 }}
             >
                 <ScrollView
@@ -108,7 +111,7 @@ export default function App() {
                     contentContainerStyle={{
                         width: Dimensions.get('window').width * dataWeather.length,
                         height: Dimensions.get('window').height + 100,
-                        zIndex: 1,
+                        // zIndex: 1,
                     }}
                     pagingEnabled={true}
                     decelerationRate={0.1}

@@ -1,9 +1,17 @@
-import React, { useMemo, useRef } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { useState, useEffect, useMemo, useRef, useContext } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
-const DateTime = ({ tg }) => {
+import { scrollHorizontalContext } from '../../config/ThemeContext';
+const DateTime = ({ tg, index, scrollToDay }) => {
     const day = useRef('');
     const date = useRef('');
+    const { setScrollToDay } = useContext(scrollHorizontalContext);
+    const [backgroundColor, setBackgroundColor] = useState({});
+
+    useEffect(() => {
+        scrollToDay == index ? setBackgroundColor({ backgroundColor: 'rgba(0, 0, 0, 0.3)' }) : setBackgroundColor({});
+    }, [scrollToDay]);
+
     useMemo(() => {
         const time = new Date(tg);
         try {
@@ -21,12 +29,17 @@ const DateTime = ({ tg }) => {
     }, [tg]);
 
     return (
-        <View style={styles.containerDay}>
-            <View style={styles.eachDay}>
+        <TouchableOpacity
+            onPress={() => {
+                setScrollToDay(index);
+            }}
+            style={styles.containerDay}
+        >
+            <View style={[styles.eachDay, backgroundColor]}>
                 <Text style={styles.dateText}>{day.current}</Text>
                 <Text style={styles.dateText}>{date.current}</Text>
             </View>
-        </View>
+        </TouchableOpacity>
     );
 };
 
@@ -40,7 +53,7 @@ const styles = StyleSheet.create({
     },
     eachDay: {
         width: '70%',
-        backgroundColor: 'rgba(0, 0, 0, 0.3)',
+        // backgroundColor: 'rgba(0, 0, 0, 0.3)',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',

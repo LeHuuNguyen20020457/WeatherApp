@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -9,7 +9,8 @@ import { navigationRef } from '../../utils/RootNavigation';
 import { DashboardHeader } from '../../module/dashboard';
 import Home from '../../screen/Home';
 import SearchNavigation from '../searchStack/SearchNavigation';
-import DailyWeather from '../../screen/DailyWeather';
+// import DailyWeather from '../../screen/DailyWeather';
+const DailyWeather = lazy(() => import('../../screen/DailyWeather'));
 import { HeaderTiNa } from '../../components/headerTiNa';
 import { TitleContext } from '../../config/ThemeContext';
 
@@ -59,6 +60,7 @@ function DrawerNavigator() {
                         headerShown: false,
                     }}
                 />
+
                 <Drawer.Screen
                     name="Thời tiết hàng ngày"
                     component={DailyWeather}
@@ -74,9 +76,9 @@ function DrawerNavigator() {
                         headerTintColor: '#fff',
 
                         headerLeft: (props) => (
-                            <TitleContext.Provider value={'Chi tiết hằng ngày'}>
+                            <TitleContext.Provider value={'Chi tiết hằng ngày'} {...props}>
                                 <View style={{ marginLeft: 20 }}>
-                                    <HeaderTiNa {...props} />
+                                    <HeaderTiNa />
                                 </View>
                             </TitleContext.Provider>
                         ),

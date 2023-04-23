@@ -2,14 +2,13 @@ import React, { useContext } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { TitleContext } from '../../config/ThemeContext';
-// import { navigate } from '../../utils/RootNavigation';
 import { useNavigation } from '@react-navigation/native';
 
 const HeaderTiNa = (props) => {
     const title = useContext(TitleContext);
     const navigation = useNavigation();
     return (
-        <View style={styles.headerTiNa}>
+        <View style={styles.headerTiNa} {...props}>
             <TouchableOpacity
                 onPress={() => {
                     navigation.goBack();

@@ -1,10 +1,15 @@
-import React, { useRef, useMemo } from 'react';
+import React, { useRef, useMemo, useContext } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
+import { scrollHorizontalContext } from '../../config/ThemeContext';
+import { useNavigation } from '@react-navigation/native';
 
-const WeatherEveryDay = ({ item }) => {
+const WeatherEveryDay = ({ item, index }) => {
     const day = useRef('');
     const date = useRef('');
+    const navigation = useNavigation();
+    const { setScrollToDay } = useContext(scrollHorizontalContext);
+
     useMemo(() => {
         const time = new Date(item.dt_txt);
         if (time.getDay() === 0) {
@@ -17,7 +22,12 @@ const WeatherEveryDay = ({ item }) => {
         date.current = time.getDate() + '/' + month;
     }, [item]);
     return (
-        <TouchableOpacity>
+        <TouchableOpacity
+            onPress={() => {
+                setScrollToDay(index);
+                navigation.navigate('Thời tiết hàng ngày');
+            }}
+        >
             <View style={styles.containerEveryDay}>
                 <View style={styles.times}>
                     <Text style={styles.timeText}>{day.current}</Text>

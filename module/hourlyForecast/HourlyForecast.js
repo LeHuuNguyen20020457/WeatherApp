@@ -22,7 +22,7 @@ const HourlyForecast = () => {
                     contentContainerStyle={{
                         display: 'flex',
                         flexDirection: 'column',
-                        zIndex: 2,
+                        // zIndex: 2,
                     }}
                     decelerationRate={'normal'}
                     nestedScrollEnabled={true}

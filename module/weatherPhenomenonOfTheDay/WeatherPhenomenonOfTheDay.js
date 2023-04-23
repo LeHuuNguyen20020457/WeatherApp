@@ -85,7 +85,7 @@ const WeatherPhenomenonOfTheDay = ({ item }) => {
             </View>
 
             <View style={{ marginVertical: 10 }}>
-                {icons.map((icon, index) => (
+                {icons?.map((icon, index) => (
                     <IconInfor key={index} icon={icon}></IconInfor>
                 ))}
             </View>

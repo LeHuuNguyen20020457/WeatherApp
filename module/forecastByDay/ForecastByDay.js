@@ -28,10 +28,10 @@ const ForecastByDay = () => {
 
     return (
         <View>
-            <HeaderTable titleLeft={'Dự báo hàng ngày'} titleRigtht={'7 ngày'} height={450}>
+            <HeaderTable titleLeft={'Dự báo hàng ngày'} titleRigtht={'5 ngày'} height={450}>
                 <View>
                     {data.map((item, index) => {
-                        return <WeatherEveryDay item={item} key={index}></WeatherEveryDay>;
+                        return <WeatherEveryDay item={item} key={index} index={index}></WeatherEveryDay>;
                     })}
                 </View>
             </HeaderTable>
